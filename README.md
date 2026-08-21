@@ -4,7 +4,25 @@ A shared library of AI coding-agent skills for reviewing GC's MERN SaaS products
 
 ## Install
 
-Run the installer from inside this repo:
+### Quick install (recommended)
+
+Run this one command from inside any project — no clone, no manual setup:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/beingsj/gc-developer-skill/main/get.sh | bash
+```
+
+For a machine-wide install instead (applies to every project on this machine):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/beingsj/gc-developer-skill/main/get.sh | bash -s -- --global
+```
+
+This downloads (or updates, on repeat runs) a cached copy of this repo to `~/.gc-core-skills`, then symlinks its `skills/` folder into the current project. Re-running the same command later both updates the cache and re-links, so it's safe to run again any time.
+
+### Manual install
+
+If you've already cloned this repo yourself:
 
 ```bash
 ./install.sh                 # link skills/ into the current project (run this from inside that project's repo, or pass its path)
@@ -12,7 +30,7 @@ Run the installer from inside this repo:
 ./install.sh --global        # link into this machine's global tool config, applies to every project
 ```
 
-This symlinks the one `skills/` directory into whatever folder each tool actually reads — no copies, so there's a single source of truth to update. To remove: `./uninstall.sh` (same arguments). Both scripts only ever touch a symlink they created — they leave anything else at that path alone.
+Either way, this symlinks the one `skills/` directory into whatever folder each tool actually reads — no copies, so there's a single source of truth to update. To remove: `./uninstall.sh` (same arguments), or from the quick-install cache: `bash ~/.gc-core-skills/uninstall.sh`. All scripts only ever touch a symlink they created — they leave anything else at that path alone.
 
 ### Where each tool looks
 
