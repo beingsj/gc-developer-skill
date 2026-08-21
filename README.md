@@ -43,6 +43,10 @@ Either way, this symlinks the one `skills/` directory into whatever folder each 
 
 `install.sh` (non-global) creates exactly three links — `.claude/skills`, `.agents/skills`, `.codex/skills` — which is enough to cover all four tools, since OpenCode already reads the first two on its own.
 
+## Reporting a Gap
+
+If a skill misses something it should have caught, flags something wrong, or doesn't trigger when it should — open an issue on this repo with: which skill, which tool you were using, and what you expected vs. what happened. Real usage is what keeps this library accurate; a checklist nobody has pushed against real code is just a guess written down.
+
 No build step, no plugin manifest — just the folders.
 
 ## House Style
