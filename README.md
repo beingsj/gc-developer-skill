@@ -1,19 +1,36 @@
 # GC Core Skills
 
-A shared library of Claude Code skills for reviewing GC's MERN SaaS products — architecture, security, functional QA, UI/UX, performance, AWS infrastructure, production readiness, testing, and growth tracking. Each skill is a self-contained `SKILL.md` that Claude Code loads automatically when a request matches its trigger description.
+A shared library of AI coding-agent skills for reviewing GC's MERN SaaS products — architecture, security, functional QA, UI/UX, performance, AWS infrastructure, production readiness, testing, and growth tracking. Each skill is a self-contained `SKILL.md` in the shared skill format now used by **Claude Code, OpenCode, Codex CLI, and Google Antigravity** — write it once, every tool can load it.
 
 ## Install
 
-Pick one:
-- **Per project**: copy or symlink `skills/` into that project's `.claude/skills/` folder.
-- **Everywhere**: copy or symlink `skills/` into `~/.claude/skills/` so every project on your machine gets all of these skills.
+Run the installer from inside this repo:
+
+```bash
+./install.sh                 # link skills/ into the current project (run this from inside that project's repo, or pass its path)
+./install.sh /path/to/repo   # link into a specific project instead
+./install.sh --global        # link into this machine's global tool config, applies to every project
+```
+
+This symlinks the one `skills/` directory into whatever folder each tool actually reads — no copies, so there's a single source of truth to update. To remove: `./uninstall.sh` (same arguments). Both scripts only ever touch a symlink they created — they leave anything else at that path alone.
+
+### Where each tool looks
+
+| Tool | Project folder | Global folder | How a skill runs |
+|---|---|---|---|
+| **Claude Code** | `.claude/skills/` | `~/.claude/skills/` | Auto-matched from your request, or say "use the `<name>` skill" |
+| **OpenCode** | `.opencode/skills/` (also reads `.claude/skills/` and `.agents/skills/` directly — already covered by the other two links) | `~/.config/opencode/skills/` | Auto-matched, or reference it by name |
+| **Codex CLI** | `.codex/skills/` | `~/.codex/skills/` | Auto-activated, or explicit `$<name>` / the `/skills` menu |
+| **Antigravity** | `.agents/skills/` | `~/.gemini/config/skills/` | Auto-matched from your request |
+
+`install.sh` (non-global) creates exactly three links — `.claude/skills`, `.agents/skills`, `.codex/skills` — which is enough to cover all four tools, since OpenCode already reads the first two on its own.
 
 No build step, no plugin manifest — just the folders.
 
 ## House Style
 
 Every skill in this set follows the same shape, so the whole library reads as one family:
-- Frontmatter `name` (kebab-case, matches its folder) and a `description` starting with "Use this skill when…" so Claude can auto-select it.
+- Frontmatter `name` (kebab-case, matches its folder) and a `description` starting with "Use this skill when…" so any of the four tools above can auto-select it.
 - Opens with a one-line persona ("You are a …") and a `## Goal`.
 - A handful of `## <Area> Checklist` sections, each a plain `Check:` bullet list.
 - Audit-style skills close with `## Severity Levels` (Critical / High / Medium / Low / Improvement) and an `## Output Format` — a findings table plus a summary block ending in a score out of 10.
